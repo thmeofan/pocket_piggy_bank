@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "903923896874",
+    "project_id": "pocket-piggy-bank-123123",
+    "storage_bucket": "pocket-piggy-bank-123123.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:903923896874:android:674952543ca57aaf46a953",
+        "android_client_info": {
+          "package_name": "com.example.pocket_piggy_bank"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5QA0mSS9lOybGqwB3rNVq5mloRyeUJTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
