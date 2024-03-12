@@ -85,25 +85,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
             Padding(
               padding: EdgeInsets.all(size.height * 0.02),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Flexible(
-                    child: Text(
-                      _current == 0 ? 'Save money' : 'Check your wallet',
-                      style: OnboardingTextStyle.description,
-                      textAlign: TextAlign.start,
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
+              child: Container(
+                height: size.height * 0.4,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: size.height * 0.01,
                     ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Flexible(
-                    child: Text(
+                    Flexible(
+                      child: Text(
+                        _current == 0 ? 'Save money' : 'Check your wallet',
+                        style: OnboardingTextStyle.description,
+                        textAlign: TextAlign.start,
+                        softWrap: true,
+                        overflow: TextOverflow.visible,
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * 0.01,
+                    ),
+                    Text(
                       _current == 0
                           ? 'Control your money in one place'
                           : 'In our app you can track your spendings and incomes',
@@ -112,19 +113,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       softWrap: true,
                       overflow: TextOverflow.visible,
                     ),
-                  ),
-                  const Spacer(),
-                  ChosenActionButton(
-                    onTap: () async {
-                      context.read<OnboardingCubit>().setFirstTime();
-                      Navigator.pushReplacementNamed(context, AppRoutes.home);
-                    },
-                    text: 'Continue',
-                  ),
-                  SizedBox(
-                    height: size.height * 0.035,
-                  ),
-                ],
+                    SizedBox(
+                      height: size.height * 0.035,
+                    ),
+                    ChosenActionButton(
+                      onTap: () async {
+                        context.read<OnboardingCubit>().setFirstTime();
+                        Navigator.pushReplacementNamed(context, AppRoutes.home);
+                      },
+                      text: 'Continue',
+                    ),
+                    SizedBox(
+                      height: size.height * 0.035,
+                    ),
+                  ],
+                ),
               ),
             )
           ],

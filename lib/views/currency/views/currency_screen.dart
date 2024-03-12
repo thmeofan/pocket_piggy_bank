@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
+import 'package:intl/intl.dart';
 import '../../../util/currency_service.dart';
 
 class CurrencyScreen extends StatefulWidget {
@@ -15,7 +14,10 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
   String _baseCurrency = 'USD';
   String _targetCurrency = 'EUR';
   double _baseAmount = 1.0;
-  final TextEditingController _controller = TextEditingController(text: '1');
+  final TextEditingController _baseCurrencyController =
+      TextEditingController(text: '1');
+  final TextEditingController _targetCurrencyController =
+      TextEditingController();
 
   @override
   void initState() {
@@ -29,71 +31,155 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
       setState(() {
         _conversionRates = rates['rates'];
         _baseCurrency = baseCurrency;
+        _updateConvertedAmount();
       });
     } catch (e) {
-      // Handle errors or show an alert
       print(e.toString());
     }
+  }
+
+  void _updateConvertedAmount() {
+    double rate = _conversionRates[_targetCurrency] ?? 0.0;
+    double convertedAmount = _baseAmount * rate;
+    _targetCurrencyController.text =
+        NumberFormat.currency(symbol: '', decimalDigits: 2)
+            .format(convertedAmount);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Currency Converter'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              TextField(
-                controller: _controller,
-                decoration: InputDecoration(
-                  labelText: 'Amount in $_baseCurrency',
+      appBar: AppBar(
+        title: Text('Currency Converter'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: _baseCurrency,
+                    isExpanded: true,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _baseCurrency = newValue!;
+                        _loadConversionRates(_baseCurrency);
+                        _baseCurrencyController.text = '1';
+                        _baseAmount = 1.0;
+                        _updateConvertedAmount();
+                      });
+                    },
+                    items: <String>['USD', 'EUR', 'GBP', 'CNY', 'JPY', 'RUB']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
                 ),
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  setState(() {
-                    _baseAmount = double.tryParse(value) ?? 0;
-                  });
-                },
+                SizedBox(width: 10),
+                Expanded(
+                  child: TextField(
+                    controller: _baseCurrencyController,
+                    decoration: InputDecoration(labelText: 'Amount'),
+                    keyboardType: TextInputType.number,
+                    onChanged: (value) {
+                      setState(() {
+                        _baseAmount = double.tryParse(value) ?? 0.0;
+                        _updateConvertedAmount();
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: DropdownButton<String>(
+                    value: _targetCurrency,
+                    isExpanded: true,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _targetCurrency = newValue!;
+                        _updateConvertedAmount();
+                      });
+                    },
+                    items: <String>['USD', 'EUR', 'GBP', 'CNY', 'JPY', 'RUB']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ),
+                SizedBox(width: 10),
+                Expanded(
+                  child: TextField(
+                    controller: _targetCurrencyController,
+                    decoration: InputDecoration(labelText: 'Converted'),
+                    readOnly: true,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const [
+                      Expanded(
+                        flex: 2,
+                        child: Text('Currency', textAlign: TextAlign.center),
+                      ),
+                      Expanded(
+                        child: Text('Buying', textAlign: TextAlign.center),
+                      ),
+                      Expanded(
+                        child: Text('Selling', textAlign: TextAlign.center),
+                      ),
+                    ],
+                  ),
+                  Divider(),
+                  ...['CNY', 'RUB', 'USD']
+                      .map((currency) => _currencyDataRow(
+                          currency, _conversionRates[currency]))
+                      .toList(),
+                ],
               ),
-              DropdownButton<String>(
-                value: _baseCurrency,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _baseCurrency = newValue!;
-                    _loadConversionRates(_baseCurrency);
-                    _controller.text = '1';
-                    _baseAmount = 1.0;
-                  });
-                },
-                items: <String>['USD', 'EUR', 'GBP', 'CNY', 'JPY']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Conversion:',
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                '$_baseAmount $_baseCurrency = ${_formatConvertedAmount()} $_targetCurrency',
-                style: TextStyle(fontSize: 24),
-              ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  String _formatConvertedAmount() {
-    double rate = _conversionRates[_targetCurrency] ?? 0.0;
-    double convertedAmount = _baseAmount * rate;
-    return NumberFormat.currency(symbol: '', decimalDigits: 2)
-        .format(convertedAmount);
+  Widget _currencyDataRow(String currency, dynamic rate) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Expanded(
+          flex: 2,
+          child: Text(currency, textAlign: TextAlign.center),
+        ),
+        Expanded(
+          child: Text(rate != null ? rate.toStringAsFixed(2) : 'N/A',
+              textAlign: TextAlign.center),
+        ),
+        Expanded(
+          child: Text(rate != null ? (rate * 1.02).toStringAsFixed(2) : 'N/A',
+              textAlign: TextAlign.center),
+        ),
+      ],
+    );
   }
 }
