@@ -7,7 +7,8 @@ import '../../../consts/app_colors.dart';
 import '../../../consts/app_text_styles/onboarding_text_style.dart';
 import '../../../util/app_routes.dart';
 import '../../app/widgets/chosen_action_button_widget.dart';
-import '../widgets/introduction_widget.dart';
+import '../widgets/introduction_png_widget.dart';
+import '../widgets/introduction_svg_widget.dart';
 
 class OnboardingScreen extends StatefulWidget {
   final bool? isFirstTime;
@@ -32,20 +33,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       //  extendBodyBehindAppBar: true,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.blackColor,
         shadowColor: Colors.transparent,
       ),
       body: Container(
-        // color: AppColors.blackColor,
+        color: AppColors.blackColor,
         child: Column(
           children: [
             Expanded(
               child: CarouselSlider(
                 items: const [
-                  IntroductionWidget(
-                    imagePath: 'assets/images/onboarding1.png',
+                  IntroductionSVGWidget(
+                    imagePath: 'assets/images/onboarding1.svg',
                   ),
-                  IntroductionWidget(
+                  IntroductionPNGWidget(
                     imagePath: 'assets/images/onboarding2.png',
                   ),
                 ],
@@ -63,71 +64,81 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: List.generate(3, (index) {
-                return AnimatedContainer(
-                  duration: Duration(milliseconds: 200),
-                  curve: Curves.easeInOut,
-                  width:
-                      _current == index ? size.width * 0.2 : size.width * 0.1,
-                  height: size.width * 0.02,
-                  margin: const EdgeInsets.symmetric(
-                      vertical: 1.0, horizontal: 2.0),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(size.width * 0.01),
-                    color:
-                        _current == index ? AppColors.blueColor : Colors.white,
+            Container(
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(2, (index) {
+                      return AnimatedContainer(
+                        duration: Duration(milliseconds: 200),
+                        curve: Curves.easeInOut,
+                        width: _current == index
+                            ? size.width * 0.06
+                            : size.width * 0.02,
+                        height: size.width * 0.02,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 1.0, horizontal: 3.5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius:
+                              BorderRadius.circular(size.width * 0.01),
+                          color: _current == index
+                              ? AppColors.purpleColor
+                              : Colors.white,
+                        ),
+                      );
+                    }),
                   ),
-                );
-              }),
-            ),
-            Padding(
-              padding: EdgeInsets.all(size.height * 0.02),
-              child: Container(
-                height: size.height * 0.4,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Flexible(
-                      child: Text(
-                        _current == 0 ? 'Save money' : 'Check your wallet',
-                        style: OnboardingTextStyle.description,
-                        textAlign: TextAlign.start,
-                        softWrap: true,
-                        overflow: TextOverflow.visible,
+                  Padding(
+                    padding: EdgeInsets.all(size.height * 0.02),
+                    child: Container(
+                      height: size.height * 0.3,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
+                          Flexible(
+                            child: Text(
+                              _current == 0
+                                  ? 'Save money'
+                                  : 'Check your wallet',
+                              style: OnboardingTextStyle.introduction,
+                              textAlign: TextAlign.start,
+                              softWrap: true,
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
+                          SizedBox(
+                            height: size.height * 0.01,
+                          ),
+                          Text(
+                            _current == 0
+                                ? 'Have control over your money in one safe place'
+                                : 'In our app you can track your spendings and incomes',
+                            style: OnboardingTextStyle.description,
+                            textAlign: TextAlign.center,
+                            softWrap: true,
+                            overflow: TextOverflow.visible,
+                          ),
+                          Spacer(),
+                          ChosenActionButton(
+                            onTap: () async {
+                              context.read<OnboardingCubit>().setFirstTime();
+                              Navigator.pushReplacementNamed(
+                                  context, AppRoutes.home);
+                            },
+                            text: 'Continue',
+                          ),
+                          SizedBox(
+                            height: size.height * 0.015,
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: size.height * 0.01,
-                    ),
-                    Text(
-                      _current == 0
-                          ? 'Control your money in one place'
-                          : 'In our app you can track your spendings and incomes',
-                      style: OnboardingTextStyle.description,
-                      textAlign: TextAlign.start,
-                      softWrap: true,
-                      overflow: TextOverflow.visible,
-                    ),
-                    SizedBox(
-                      height: size.height * 0.035,
-                    ),
-                    ChosenActionButton(
-                      onTap: () async {
-                        context.read<OnboardingCubit>().setFirstTime();
-                        Navigator.pushReplacementNamed(context, AppRoutes.home);
-                      },
-                      text: 'Continue',
-                    ),
-                    SizedBox(
-                      height: size.height * 0.035,
-                    ),
-                  ],
-                ),
+                  )
+                ],
               ),
             )
           ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:pocket_piggy_bank/consts/app_colors.dart';
 
-class IntroductionWidget extends StatelessWidget {
+class IntroductionPNGWidget extends StatelessWidget {
   final String imagePath;
 
-  const IntroductionWidget({
+  const IntroductionPNGWidget({
     key,
     required this.imagePath,
   }) : super(key: key);
@@ -18,7 +20,7 @@ class IntroductionWidget extends StatelessWidget {
           image: AssetImage(imagePath),
           fit: BoxFit.contain,
           colorFilter: ColorFilter.mode(
-            Colors.white.withOpacity(1),
+            AppColors.blackColor.withOpacity(1),
             BlendMode.dstATop,
           ),
         ),

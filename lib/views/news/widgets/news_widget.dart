@@ -31,11 +31,47 @@ class NewsWidget extends StatelessWidget {
           ),
           child: Column(
             children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(1.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Text(
+                          newsModel.title,
+                          maxLines: 2,
+                          style: NewsTextStyle.title,
+                        ),
+                      ),
+                      SizedBox(
+                        height: screenSize.height * 0.005,
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            newsModel.text,
+                            style: NewsTextStyle.preview,
+                            maxLines: 3,
+                            softWrap: true,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: screenSize.height * 0.015,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: FancyShimmerImage(
-                  width: screenSize.width * 0.9,
-                  height: screenSize.height * 0.13,
+                  width: screenSize.width * 0.89,
+                  height: screenSize.height * 0.15,
                   boxFit: BoxFit.cover,
                   imageUrl: newsModel.imageUrl,
                 ),
@@ -43,52 +79,6 @@ class NewsWidget extends StatelessWidget {
               const SizedBox(
                 width: 5,
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(1.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        newsModel.title,
-                        maxLines: 1,
-                        style: NewsTextStyle.title,
-                      ),
-                      SizedBox(
-                        height: screenSize.height * 0.01,
-                      ),
-                      Expanded(
-                        child: Text(
-                          newsModel.text,
-                          style: NewsTextStyle.preview,
-                          maxLines: 3,
-                          softWrap: true,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      SizedBox(
-                        height: screenSize.height * 0.02,
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            width: screenSize.width * 0.02,
-                          ),
-                          Text(
-                            newsModel.date,
-                            style: NewsTextStyle.date,
-                          ),
-                          Spacer(),
-                          const Text('Читать далее', style: NewsTextStyle.read),
-                          SizedBox(
-                            width: screenSize.width * 0.02,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              )
             ],
           ),
         ),

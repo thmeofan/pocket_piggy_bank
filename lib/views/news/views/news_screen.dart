@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../consts/app_colors.dart';
 import '../../../consts/app_text_styles/synopsis_text_style.dart';
 import '../../../data/models/news_model.dart';
 import '../../../util/app_routes.dart';
@@ -16,23 +17,25 @@ class NewsScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: const Text(
-            'Новости',
-            style: SynopsisTextStyle.appbar,
-          ),
+          centerTitle: true,
+          backgroundColor: AppColors.blackColor,
           actions: [
             IconButton(
-              iconSize: 24,
-              onPressed: () {
-                Navigator.of(context).pushNamed(AppRoutes.profile);
-              },
-              icon: SvgPicture.asset('assets/icons/profile.svg'),
-            ),
+              onPressed: () {},
+              icon: SvgPicture.asset(
+                'assets/icons/settings.svg',
+                color: Colors.white,
+              ),
+            )
           ],
+          title: const Text(
+            'News',
+            style: SynopsisTextStyle.appbar,
+            textAlign: TextAlign.center,
+          ),
         ),
         body: Container(
+          color: AppColors.blackColor,
           child: Column(children: [
             Expanded(
               child: ListView.builder(

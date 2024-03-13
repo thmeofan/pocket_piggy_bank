@@ -22,8 +22,6 @@ class _HomeScreenState extends State<HomeScreen> {
       newsModel: news,
     ),
     CurrencyScreen(),
-
-    // const SettingsScreen()
   ];
 
   @override
@@ -35,34 +33,28 @@ class _HomeScreenState extends State<HomeScreen> {
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/home.svg',
-              width: size.height * 0.032,
-              height: size.height * 0.032,
-              color: currentIndex == 0
-                  ? AppColors.purpleColor
-                  : AppColors.darkGreyColor,
+              'assets/icons/finance.svg',
+              width: size.height * 0.045,
+              height: size.height * 0.045,
+              color: currentIndex == 0 ? AppColors.purpleColor : Colors.white,
             ),
             label: 'Finance',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset(
-              'assets/icons/activity.svg',
-              width: size.height * 0.032,
-              height: size.height * 0.032,
-              color: currentIndex == 1
-                  ? AppColors.purpleColor
-                  : AppColors.darkGreyColor,
+              'assets/icons/news.svg',
+              width: size.height * 0.045,
+              height: size.height * 0.045,
+              color: currentIndex == 1 ? AppColors.purpleColor : Colors.white,
             ),
             label: 'News',
           ),
           BottomNavigationBarItem(
               icon: SvgPicture.asset(
-                'assets/icons/statistics.svg',
-                width: size.height * 0.032,
-                height: size.height * 0.032,
-                color: currentIndex == 2
-                    ? AppColors.purpleColor
-                    : AppColors.darkGreyColor,
+                'assets/icons/currency.svg',
+                width: size.height * 0.045,
+                height: size.height * 0.045,
+                color: currentIndex == 2 ? AppColors.purpleColor : Colors.white,
               ),
               label: 'Currency'),
         ],
@@ -72,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.blackColor,
         unselectedItemColor: Colors.white,
         selectedItemColor: AppColors.purpleColor,
         showSelectedLabels: false,

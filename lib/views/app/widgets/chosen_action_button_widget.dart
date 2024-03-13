@@ -20,8 +20,8 @@ class ChosenActionButton extends StatelessWidget {
         right: size.width * 0.08,
       ),
       child: SizedBox(
-        width: size.width * 0.9,
-        height: size.height * 0.065,
+        width: double.infinity,
+        height: size.height * 0.06,
         child: TextButton(
           onPressed: onTap,
           style: TextButton.styleFrom(

@@ -2,34 +2,34 @@ import 'package:flutter/material.dart';
 
 import '../app_colors.dart';
 
-class CalculatorTextStyle {
-  static const TextStyle title = TextStyle(
+class CurrencyTextStyle {
+  static TextStyle rowTitle = TextStyle(
     fontFamily: 'SF Pro Text',
-    fontSize: 18.0,
+    fontSize: 13.0,
     height: 22 / 18,
     fontWeight: FontWeight.w600,
-    color: AppColors.darkGreyColor,
+    color: Colors.white.withOpacity(0.4),
   );
-  static const TextStyle preview = TextStyle(
+  static const TextStyle rowDropDown = TextStyle(
     fontFamily: 'SF Pro Text',
-    fontSize: 12.0,
+    fontSize: 14.0,
     height: 18 / 12,
-    fontWeight: FontWeight.w600,
-    color: AppColors.darkGreyColor,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
   );
-  static const TextStyle date = TextStyle(
+  static const TextStyle tableTitles = TextStyle(
     fontFamily: 'SF Pro Text',
-    fontSize: 12.0,
+    fontSize: 14.0,
     height: 18 / 12,
-    fontWeight: FontWeight.w400,
-    color: AppColors.darkGreyColor,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
   );
-  static const TextStyle credit = TextStyle(
+  static const TextStyle tableLine = TextStyle(
     fontFamily: 'SF Pro Text',
     fontSize: 18.0,
-    height: 20 / 18,
-    fontWeight: FontWeight.w600,
-    //  color: AppColors.orangeColor,
+    height: 18 / 12,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
   );
   static const TextStyle detailTitle = TextStyle(
     fontFamily: 'SF Pro Display',

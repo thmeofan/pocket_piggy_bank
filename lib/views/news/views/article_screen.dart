@@ -1,6 +1,7 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:pocket_piggy_bank/consts/app_colors.dart';
 import '../../../consts/app_text_styles/news_text_style.dart';
 import '../../../consts/app_text_styles/synopsis_text_style.dart';
 import '../../../data/models/news_model.dart';
@@ -15,11 +16,12 @@ class ArticleScreen extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        // centerTitle: true,
+        backgroundColor: AppColors.blackColor,
         elevation: 0,
+        titleSpacing: -5,
         title: const Text(
-          'Назад',
-          style: SynopsisTextStyle.appbar,
+          'back',
+          style: SynopsisTextStyle.back,
         ),
         leading: IconButton(
           onPressed: () {
@@ -27,16 +29,18 @@ class ArticleScreen extends StatelessWidget {
           },
           icon: SvgPicture.asset(
             'assets/icons/arrow.svg',
-            width: screenSize.width * 0.08,
-            height: screenSize.width * 0.08,
+            width: screenSize.width * 0.04,
+            height: screenSize.width * 0.04,
+            // color: Colors.white,
           ),
         ),
       ),
       body: Container(
+        color: AppColors.blackColor,
         child: Column(
           children: [
             SizedBox(
-              height: screenSize.height * 0.3,
+              height: screenSize.height * 0.25,
               width: screenSize.width * 0.9,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),

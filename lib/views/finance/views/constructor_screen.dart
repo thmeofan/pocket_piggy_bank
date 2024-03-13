@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:pocket_piggy_bank/views/app/widgets/input_widget.dart';
 import '../../../consts/app_colors.dart';
-import '../../../consts/app_text_styles/operation_text_style.dart';
+import '../../../consts/app_text_styles/constructor_text_style.dart';
 import '../../../consts/app_text_styles/synopsis_text_style.dart';
 import '../../app/widgets/chosen_action_button_widget.dart';
 
@@ -16,11 +18,10 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
   final _dateController = TextEditingController();
   final _commentController = TextEditingController();
   String _operationType = 'Income';
-  List<bool> _isSelected = [true, false]; // 'Income' is selected by default.
+  List<bool> _isSelected = [true, false];
 
   void _toggleOperationType(int index) {
     setState(() {
-      // Toggle the operation type based on index
       if (index == 0) {
         _operationType = 'Income';
         _isSelected = [true, false];
@@ -38,9 +39,8 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
     final comment = _commentController.text;
 
     if (description.isEmpty || amount == null || date.isEmpty) {
-      return; // Optionally, you could show an error message here.
+      return;
     }
-
     final operation = {
       'description': description,
       'amount': amount,
@@ -48,12 +48,10 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
       'date': date,
       'comment': comment,
     };
-
-    // Assuming you pop the screen and pass the operation back
+    print('sdfsdfdsfsdfdsf');
     Navigator.of(context).pop(operation);
   }
 
-  // This function is how we would display the DatePicker
   void _pickDate() async {
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -69,83 +67,128 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
   }
 
   @override
+  void dispose() {
+    _descriptionController.dispose();
+    _amountController.dispose();
+    _dateController.dispose();
+    _commentController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Entry'),
+        backgroundColor: AppColors.blackColor,
+        elevation: 0,
+        titleSpacing: -5,
+        title: const Text(
+          'back',
+          style: SynopsisTextStyle.back,
+        ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: SvgPicture.asset(
+            'assets/icons/arrow.svg',
+            width: size.width * 0.04,
+            height: size.width * 0.04,
+            // color: Colors.white,
+          ),
+        ),
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16.0),
+      body: Container(
+        color: AppColors.blackColor,
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Center(
                 child: ToggleButtons(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32.0),
-                      child: Text('Income'),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 32.0),
-                      child: Text('Spendings'),
-                    ),
-                  ],
                   isSelected: _isSelected,
                   onPressed: _toggleOperationType,
                   borderRadius: BorderRadius.circular(10.0),
-                ),
-              ),
-              TextField(
-                controller: _descriptionController,
-                decoration: InputDecoration(
-                  labelText: 'Operation Name',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              TextField(
-                controller: _amountController,
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  labelText: 'Amount',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              GestureDetector(
-                onTap: _pickDate,
-                child: AbsorbPointer(
-                  child: TextField(
-                    controller: _dateController,
-                    decoration: InputDecoration(
-                      labelText: 'Date (tap to select)',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                  selectedColor: Colors.white,
+                  fillColor: Colors.white.withOpacity(0.25),
+                  renderBorder: false,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.15,
+                          vertical: size.height * 0.02),
+                      color: _isSelected[0]
+                          ? Colors.white.withOpacity(0.25)
+                          : Colors.grey.withOpacity(0.25),
+                      child: Text(
+                        'Income',
+                        style: TextStyle(
+                          color: _isSelected[0]
+                              ? Colors.white
+                              : Colors.white.withOpacity(0.35),
+                        ),
                       ),
                     ),
-                  ),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: size.width * 0.15,
+                          vertical: size.height * 0.02),
+                      color: _isSelected[1]
+                          ? Colors.white.withOpacity(0.25)
+                          : Colors.grey.withOpacity(0.25),
+                      child: Text(
+                        'Spendings',
+                        style: TextStyle(
+                          color: _isSelected[1]
+                              ? Colors.white
+                              : Colors.white.withOpacity(0.35),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(height: 16.0),
-              TextField(
-                controller: _commentController,
-                decoration: InputDecoration(
-                  labelText: 'Comment',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+              SizedBox(
+                height: size.height * 0.02,
+              ),
+              Container(
+                height: size.height * 0.8,
+                color: AppColors.darkGreyColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      InputWidget(
+                        controller: _descriptionController,
+                        keyboardType: TextInputType.number,
+                        labelText: 'Enter amount',
+                      ),
+                      InputWidget(
+                        controller: _amountController,
+                        labelText: 'Name',
+                      ),
+                      GestureDetector(
+                        onTap: _pickDate,
+                        child: AbsorbPointer(
+                          child: InputWidget(
+                            controller: _dateController,
+                            labelText: 'Date',
+                          ),
+                        ),
+                      ),
+                      InputWidget(
+                        controller: _commentController,
+                        labelText: 'Comment',
+                      ),
+                      SizedBox(height: 16.0),
+                      ChosenActionButton(
+                        text: 'Make an entry',
+                        onTap: _saveOperation,
+                      )
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(height: 16.0),
-              ElevatedButton(
-                onPressed: _saveOperation,
-                child: Text('Save Operation'),
               ),
             ],
           ),

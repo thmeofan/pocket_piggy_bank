@@ -2,54 +2,54 @@ import 'package:flutter/material.dart';
 
 import '../app_colors.dart';
 
-class OperationTextStyle {
-  static const TextStyle switchStyle = TextStyle(
+class FinanceTextStyle {
+  static const TextStyle title = TextStyle(
     fontFamily: 'SF Pro Text',
     fontSize: 18.0,
     height: 20 / 18,
     fontWeight: FontWeight.w500,
-    color: AppColors.darkGreyColor,
+    color: Colors.white,
   );
-  static const TextStyle type = TextStyle(
+  static TextStyle subtitle = TextStyle(
     fontFamily: 'SF Pro Text',
-    fontSize: 20.0,
+    fontSize: 14.0,
     height: 24 / 20,
     fontWeight: FontWeight.w800,
-    color: AppColors.darkGreyColor,
+    color: Colors.white.withOpacity(0.25),
   );
-  static const TextStyle description = TextStyle(
+  static TextStyle bannerTitles = TextStyle(
     fontFamily: 'SF Pro Text',
     fontSize: 20.0,
     height: 20 / 18,
-    fontWeight: FontWeight.w400,
-    color: AppColors.darkGreyColor,
+    fontWeight: FontWeight.w600,
+    color: Colors.white.withOpacity(0.25),
   );
-  static const TextStyle hint = TextStyle(
+  static const TextStyle date = TextStyle(
     fontFamily: 'SF Pro Text',
-    fontSize: 16.0,
+    fontSize: 12.0,
     height: 20 / 14,
     fontWeight: FontWeight.w800,
-  //  color: AppColors.lightGreyColor,
+    color: Colors.white,
   );
   static const TextStyle tileSum = TextStyle(
     fontFamily: 'SF Pro Display',
     fontSize: 18.0,
     height: 20 / 18,
     fontWeight: FontWeight.w800,
-  //  color: AppColors.orangeColor,
+    //  color: AppColors.orangeColor,
   );
-  static const TextStyle tileSubtitle = TextStyle(
+  static TextStyle tileSubtitle = TextStyle(
     fontFamily: 'SF Pro Display',
-    fontSize: 14.0,
+    fontSize: 12.0,
     height: 20 / 14,
     fontWeight: FontWeight.w400,
-    color: AppColors.darkGreyColor,
+    color: Colors.white.withOpacity(0.25),
   );
-  static const TextStyle date = TextStyle(
+  static const TextStyle tileTitle = TextStyle(
     fontFamily: 'SF Pro Display',
-    fontSize: 10.0,
-    height: 12 / 10,
-    fontWeight: FontWeight.w400,
-    color: AppColors.darkGreyColor,
+    fontSize: 15.0,
+    height: 20 / 14,
+    fontWeight: FontWeight.w500,
+    color: Colors.white,
   );
 }
