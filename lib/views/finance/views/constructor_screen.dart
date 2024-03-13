@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:pocket_piggy_bank/views/app/widgets/input_widget.dart';
 import '../../../consts/app_colors.dart';
-import '../../../consts/app_text_styles/constructor_text_style.dart';
 import '../../../consts/app_text_styles/synopsis_text_style.dart';
 import '../../app/widgets/chosen_action_button_widget.dart';
 
@@ -33,23 +32,30 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
   }
 
   void _saveOperation() {
-    final description = _descriptionController.text;
-    final amount = double.tryParse(_amountController.text);
-    final date = _dateController.text;
-    final comment = _commentController.text;
+    try {
+      final description = _descriptionController.text;
+      final amount = double.tryParse(_amountController.text);
+      final date = _dateController.text;
+      final comment = _commentController.text;
 
-    if (description.isEmpty || amount == null || date.isEmpty) {
-      return;
+      if (description.isEmpty || amount == null || date.isEmpty) {
+        debugPrint(
+            'Validation failed: description, amount, or date is missing.');
+        return;
+      }
+
+      final operation = {
+        'description': description,
+        'amount': amount,
+        'type': _operationType,
+        'date': date,
+        'comment': comment,
+      };
+
+      Navigator.of(context).pop(operation);
+    } catch (e) {
+      debugPrint('Error in _saveOperation: $e');
     }
-    final operation = {
-      'description': description,
-      'amount': amount,
-      'type': _operationType,
-      'date': date,
-      'comment': comment,
-    };
-    print('sdfsdfdsfsdfdsf');
-    Navigator.of(context).pop(operation);
   }
 
   void _pickDate() async {
@@ -116,7 +122,7 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
                   children: <Widget>[
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.15,
+                          horizontal: size.width * 0.135,
                           vertical: size.height * 0.02),
                       color: _isSelected[0]
                           ? Colors.white.withOpacity(0.25)
@@ -132,7 +138,7 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: size.width * 0.15,
+                          horizontal: size.width * 0.135,
                           vertical: size.height * 0.02),
                       color: _isSelected[1]
                           ? Colors.white.withOpacity(0.25)
@@ -160,12 +166,13 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
                   child: Column(
                     children: [
                       InputWidget(
-                        controller: _descriptionController,
-                        keyboardType: TextInputType.number,
+                        controller: _amountController,
+                        keyboardType:
+                            TextInputType.numberWithOptions(decimal: true),
                         labelText: 'Enter amount',
                       ),
                       InputWidget(
-                        controller: _amountController,
+                        controller: _descriptionController,
                         labelText: 'Name',
                       ),
                       GestureDetector(

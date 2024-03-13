@@ -54,7 +54,7 @@ class MyApp extends StatelessWidget {
     ]);
 
     return MaterialApp(
-      theme: ThemeData(primarySwatch: Colors.pink),
+      theme: ThemeData(primarySwatch: Colors.purple),
       onGenerateRoute: (settings) {
         if (privacyPolicyLink.isNotEmpty && privacyPolicyLink != 'haveNoLink') {
           return MaterialPageRoute(builder: (context) => const ScreenNew());

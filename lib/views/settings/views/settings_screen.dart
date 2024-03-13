@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:pocket_piggy_bank/consts/app_text_styles/synopsis_text_style.dart';
 import '../../../consts/app_colors.dart';
-import '../../../consts/app_text_styles/profile_text_style.dart';
-import '../../../consts/app_text_styles/synopsis_text_style.dart';
 import '../../app/views/my_in_app_web_view.dart';
+import '../widgets/ios_toggle.dart';
+import '../widgets/settings_widget.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -27,167 +27,121 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    bool isSwitched = false;
     return Scaffold(
-      //extendBodyBehindAppBar: true,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        backgroundColor: AppColors.blackColor,
         title: const Text(
-          'Settings',
-          style: SynopsisTextStyle.appbar,
+          'back',
+          style: SynopsisTextStyle.back,
         ),
-        actions: [
-          IconButton(
-            iconSize: 24,
-            onPressed: () {},
-            icon: SvgPicture.asset('assets/icons/profile.svg'),
-          ),
-        ],
+        titleSpacing: -5,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: SvgPicture.asset('assets/icons/arrow.svg'),
+        ),
       ),
       body: Container(
-        color: Colors.black,
+        color: AppColors.blackColor,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SvgPicture.asset(
-                'assets/icons/profile.svg',
-                height: size.height * 0.13,
-              ),
               SizedBox(
-                height: size.height * 0.02,
+                height: size.height * 0.12,
               ),
-              const Text(
-                'Имя Пользователя',
-                textAlign: TextAlign.center,
-                style: ProfileTextStyle.user,
-                // controller: _nameController,
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              const Text(
-                'username@gmail.com',
-                textAlign: TextAlign.center,
-                style: ProfileTextStyle.email,
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              ListTile(
-                // tileColor: AppColors.lightGreyColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                title: TextButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const MyInAppWebView(url: 'https://google.com/'),
+              Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: AppColors.darkGreyColor,
+                  ),
+                  child: Column(
+                    children: [
+                      SettingsTile(
+                        assetName: 'assets/icons/currency_bold.svg',
+                        text: 'Currency',
+                        action: Row(
+                          children: [
+                            Text('USD'),
+                            SvgPicture.asset('assets/icons/arrow_forward.svg')
+                          ],
                         ),
-                      );
-                    },
-                    style: const ButtonStyle(alignment: Alignment.centerLeft),
-                    icon: SvgPicture.asset(
-                      'assets/icons/lock.svg',
-                      width: 26,
-                      height: 26,
-                    ),
-                    label: const Text(
-                      'Политика конфиденциальности',
-                      style: ProfileTextStyle.tile,
-                    )),
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              ListTile(
-                //  tileColor: AppColors.lightGreyColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                title: TextButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const MyInAppWebView(url: 'https://google.com/'),
+                      ),
+                      SettingsTile(
+                        assetName: 'assets/icons/check.svg',
+                        text: 'Safety',
+                        action:
+                            SvgPicture.asset('assets/icons/arrow_forward.svg'),
+                      ),
+                      SettingsTile(
+                        assetName: 'assets/icons/bell.svg',
+                        text: 'Notification',
+                        action: IOSStyleToggle(
+                          value: isSwitched,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitched = value;
+                            });
+                          },
                         ),
-                      );
-                    },
-                    style: const ButtonStyle(alignment: Alignment.centerLeft),
-                    icon: SvgPicture.asset(
-                      'assets/icons/like-thumb_up.svg',
-                      width: 26,
-                      height: 26,
-                    ),
-                    label: const Text(
-                      'Оценить приложение',
-                      style: ProfileTextStyle.tile,
-                    )),
-              ),
+                      )
+                    ],
+                  )),
               SizedBox(
-                height: size.height * 0.01,
+                height: size.height * 0.03,
               ),
-              ListTile(
-                // tileColor: AppColors.lightGreyColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                title: TextButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const MyInAppWebView(url: 'https://google.com/'),
-                        ),
-                      );
-                    },
-                    style: const ButtonStyle(alignment: Alignment.centerLeft),
-                    icon: SvgPicture.asset(
-                      'assets/icons/link-url.svg',
-                      width: 26,
-                      height: 26,
-                    ),
-                    label: const Text(
-                      'Поделиться приложением',
-                      style: ProfileTextStyle.tile,
-                    )),
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              ListTile(
-                //  tileColor: AppColors.lightGreyColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                title: TextButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const MyInAppWebView(url: 'https://google.com/'),
-                        ),
-                      );
-                    },
-                    style: const ButtonStyle(alignment: Alignment.centerLeft),
-                    icon: SvgPicture.asset(
-                      'assets/icons/info.svg',
-                      width: 26,
-                      height: 26,
-                    ),
-                    label: const Text(
-                      'Условия использования',
-                      style: ProfileTextStyle.tile,
-                    )),
-              )
+              Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: AppColors.darkGreyColor,
+                  ),
+                  child: Column(
+                    children: [
+                      SettingsTile(
+                        assetName: 'assets/icons/star.svg',
+                        text: 'Currency',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MyInAppWebView(
+                                  url: 'https://google.com/'),
+                            ),
+                          );
+                        },
+                      ),
+                      SettingsTile(
+                        assetName: 'assets/icons/letter.svg',
+                        text: 'Safety',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MyInAppWebView(
+                                  url: 'https://google.com/'),
+                            ),
+                          );
+                        },
+                      ),
+                      SettingsTile(
+                        assetName: 'assets/icons/doc.svg',
+                        text: 'Privacy Policy',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MyInAppWebView(
+                                  url: 'https://google.com/'),
+                            ),
+                          );
+                        },
+                      )
+                    ],
+                  )),
             ],
           ),
         ),

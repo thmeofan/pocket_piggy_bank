@@ -21,7 +21,9 @@ class NewsScreen extends StatelessWidget {
           backgroundColor: AppColors.blackColor,
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AppRoutes.profile);
+              },
               icon: SvgPicture.asset(
                 'assets/icons/settings.svg',
                 color: Colors.white,

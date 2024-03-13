@@ -26,9 +26,6 @@ abstract class AppRoutes {
         child = const HomeScreen();
       case profile:
         child = const SettingsScreen();
-      // case operation:
-      //   child = FinanceScreen();
-
       case article:
         NewsModel news = settings.arguments as NewsModel;
         child = ArticleScreen(

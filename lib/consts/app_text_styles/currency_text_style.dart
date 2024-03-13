@@ -10,6 +10,13 @@ class CurrencyTextStyle {
     fontWeight: FontWeight.w600,
     color: Colors.white.withOpacity(0.4),
   );
+  static TextStyle rowInput = TextStyle(
+    fontFamily: 'SF Pro Text',
+    fontSize: 14.0,
+    height: 22 / 18,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
+  );
   static const TextStyle rowDropDown = TextStyle(
     fontFamily: 'SF Pro Text',
     fontSize: 14.0,

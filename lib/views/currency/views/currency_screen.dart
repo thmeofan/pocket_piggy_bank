@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:intl/intl.dart';
+import 'package:pocket_piggy_bank/consts/app_text_styles/currency_text_style.dart';
 import '../../../consts/app_colors.dart';
 import '../../../consts/app_text_styles/synopsis_text_style.dart';
+import '../../../util/app_routes.dart';
 import '../../../util/currency_service.dart';
 
 class CurrencyScreen extends StatefulWidget {
@@ -58,7 +60,9 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
         backgroundColor: AppColors.blackColor,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(AppRoutes.profile);
+            },
             icon: SvgPicture.asset(
               'assets/icons/settings.svg',
               color: Colors.white,
@@ -89,6 +93,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                     child: Center(
                       child: DropdownButton<String>(
                         value: _baseCurrency,
+                        dropdownColor: AppColors.darkGreyColor,
                         icon: SvgPicture.asset('assets/icons/down.svg'),
                         isExpanded: true,
                         underline: Container(),
@@ -111,8 +116,10 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
+                            alignment: Alignment.center,
                             child: Text(
                               value,
+                              style: CurrencyTextStyle.rowDropDown,
                             ),
                           );
                         }).toList(),
@@ -124,17 +131,20 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Currency quantity'),
+                        Text(
+                          'Currency quantity',
+                          style: CurrencyTextStyle.rowTitle,
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             color: AppColors.darkGreyColor,
-                            borderRadius: BorderRadius.circular(
-                                10.0), // Rounded corners// Remove input borders
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: TextField(
                             controller: _baseCurrencyController,
+                            style: CurrencyTextStyle.rowInput,
                             keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: InputBorder.none,
                               contentPadding:
                                   EdgeInsets.symmetric(horizontal: 10.0),
@@ -166,6 +176,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                       child: DropdownButton<String>(
                         icon: SvgPicture.asset('assets/icons/up.svg'),
                         value: _targetCurrency,
+                        dropdownColor: AppColors.darkGreyColor,
                         isExpanded: true,
                         underline: Container(),
                         onChanged: (String? newValue) {
@@ -183,8 +194,12 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                           'RUB'
                         ].map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
+                            alignment: Alignment.center,
                             value: value,
-                            child: Text(value),
+                            child: Text(
+                              value,
+                              style: CurrencyTextStyle.rowDropDown,
+                            ),
                           );
                         }).toList(),
                       ),
@@ -195,14 +210,17 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Currency quantity'),
+                        Text(
+                          'Currency quantity',
+                          style: CurrencyTextStyle.rowTitle,
+                        ),
                         Container(
                           decoration: BoxDecoration(
                             color: AppColors.darkGreyColor,
-                            borderRadius: BorderRadius.circular(
-                                10.0), // Rounded corners// Remove input borders
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: TextField(
+                            style: CurrencyTextStyle.rowInput,
                             controller: _targetCurrencyController,
                             decoration: InputDecoration(
                               border: InputBorder.none,
@@ -229,15 +247,27 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                         SizedBox(
                           width: size.width * 0.13,
                         ),
-                        Expanded(
+                        const Expanded(
                           flex: 2,
-                          child: Text('Currency', textAlign: TextAlign.center),
+                          child: Text(
+                            'Currency',
+                            textAlign: TextAlign.center,
+                            style: CurrencyTextStyle.tableTitles,
+                          ),
                         ),
-                        Expanded(
-                          child: Text('Buying', textAlign: TextAlign.center),
+                        const Expanded(
+                          child: Text(
+                            'Buying',
+                            textAlign: TextAlign.center,
+                            style: CurrencyTextStyle.tableTitles,
+                          ),
                         ),
-                        Expanded(
-                          child: Text('Selling', textAlign: TextAlign.center),
+                        const Expanded(
+                          child: Text(
+                            'Selling',
+                            textAlign: TextAlign.center,
+                            style: CurrencyTextStyle.tableTitles,
+                          ),
                         ),
                       ],
                     ),
@@ -274,19 +304,27 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
           ),
           Expanded(
             flex: 2,
-            child: Text(currency, textAlign: TextAlign.center),
+            child: Text(
+              currency,
+              textAlign: TextAlign.center,
+              style: CurrencyTextStyle.tableLine,
+            ),
           ),
           Expanded(
             child: Text(
-                doubleRate != null ? doubleRate.toStringAsFixed(2) : 'N/A',
-                textAlign: TextAlign.center),
+              doubleRate != null ? doubleRate.toStringAsFixed(2) : 'N/A',
+              textAlign: TextAlign.center,
+              style: CurrencyTextStyle.tableLine,
+            ),
           ),
           Expanded(
             child: Text(
-                doubleRate != null
-                    ? (doubleRate * 1.02).toStringAsFixed(2)
-                    : 'N/A',
-                textAlign: TextAlign.center),
+              doubleRate != null
+                  ? (doubleRate * 1.02).toStringAsFixed(2)
+                  : 'N/A',
+              textAlign: TextAlign.center,
+              style: CurrencyTextStyle.tableLine,
+            ),
           ),
         ],
       ),

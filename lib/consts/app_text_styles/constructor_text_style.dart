@@ -3,11 +3,18 @@ import 'package:flutter/material.dart';
 import '../app_colors.dart';
 
 class FinanceTextStyle {
-  static const TextStyle title = TextStyle(
+  static TextStyle input = TextStyle(
     fontFamily: 'SF Pro Text',
-    fontSize: 18.0,
+    fontSize: 14.0,
     height: 20 / 18,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
+    color: Colors.white.withOpacity(0.6),
+  );
+  static TextStyle output = TextStyle(
+    fontFamily: 'SF Pro Text',
+    fontSize: 14.0,
+    height: 20 / 18,
+    fontWeight: FontWeight.w400,
     color: Colors.white,
   );
   static TextStyle subtitle = TextStyle(
@@ -19,10 +26,10 @@ class FinanceTextStyle {
   );
   static TextStyle bannerTitles = TextStyle(
     fontFamily: 'SF Pro Text',
-    fontSize: 20.0,
+    fontSize: 14.0,
     height: 20 / 18,
     fontWeight: FontWeight.w600,
-    color: Colors.white.withOpacity(0.25),
+    color: Colors.white.withOpacity(0.55),
   );
   static const TextStyle date = TextStyle(
     fontFamily: 'SF Pro Text',
@@ -31,19 +38,19 @@ class FinanceTextStyle {
     fontWeight: FontWeight.w800,
     color: Colors.white,
   );
-  static const TextStyle tileSum = TextStyle(
+  static const TextStyle tileSumIn = TextStyle(
     fontFamily: 'SF Pro Display',
-    fontSize: 18.0,
+    fontSize: 20.0,
     height: 20 / 18,
-    fontWeight: FontWeight.w800,
-    //  color: AppColors.orangeColor,
+    fontWeight: FontWeight.w600,
+    color: AppColors.greenColor,
   );
-  static TextStyle tileSubtitle = TextStyle(
+  static const TextStyle tileSumSp = TextStyle(
     fontFamily: 'SF Pro Display',
-    fontSize: 12.0,
-    height: 20 / 14,
-    fontWeight: FontWeight.w400,
-    color: Colors.white.withOpacity(0.25),
+    fontSize: 20.0,
+    height: 20 / 18,
+    fontWeight: FontWeight.w600,
+    color: Colors.white,
   );
   static const TextStyle tileTitle = TextStyle(
     fontFamily: 'SF Pro Display',
@@ -51,5 +58,12 @@ class FinanceTextStyle {
     height: 20 / 14,
     fontWeight: FontWeight.w500,
     color: Colors.white,
+  );
+  static TextStyle tileSubitle = TextStyle(
+    fontFamily: 'SF Pro Display',
+    fontSize: 12.0,
+    height: 20 / 14,
+    fontWeight: FontWeight.w300,
+    color: Colors.white.withOpacity(0.5),
   );
 }
