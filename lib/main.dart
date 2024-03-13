@@ -29,7 +29,7 @@ Future<void> initializeFirebase() async {
 Future<String> fetchPrivacyPolicyLink() async {
   FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.fetchAndActivate();
-  return remoteConfig.getString('test');
+  return remoteConfig.getString('test1');
 }
 
 Future<bool> checkFirstLaunch() async {

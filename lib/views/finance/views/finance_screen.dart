@@ -303,7 +303,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
                         SizedBox(
                           height: screenSize.height * 0.1,
                         ),
-                        Text(
+                        const Text(
                           'There is no information on income and expenses yet',
                           style: FinanceTextStyle.tileTitle,
                         ),
