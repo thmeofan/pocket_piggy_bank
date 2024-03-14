@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -44,11 +45,64 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
   }
 
   void _updateConvertedAmount() {
-    double rate = _conversionRates[_targetCurrency] ?? 0.0;
+    double rate = (_conversionRates[_targetCurrency] ?? 0)
+        .toDouble(); // Convert rate to double
     double convertedAmount = _baseAmount * rate;
     _targetCurrencyController.text =
         NumberFormat.currency(symbol: '', decimalDigits: 2)
             .format(convertedAmount);
+  }
+
+  bool _isLoading = false;
+
+  void _handleBaseAmountChange(String value) {
+    double? amount = double.tryParse(value);
+    if (amount != null) {
+      setState(() {
+        _baseAmount = amount;
+        _updateConvertedAmount();
+      });
+    }
+  }
+
+  void _handleBaseCurrencyChange(String newValue) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await Future.delayed(Duration(seconds: 2));
+
+    // Create a list of available options
+    final availableOptions = ['USD', 'EUR', 'GBP', 'CNY', 'JPY', 'RUB'];
+
+    // Check if the new value is one of the available options
+    if (availableOptions.contains(newValue)) {
+      setState(() {
+        _baseCurrency = newValue;
+        _loadConversionRates(_baseCurrency);
+        _baseCurrencyController.text = '1';
+        _baseAmount = 1.0;
+        _updateConvertedAmount();
+        _isLoading = false;
+      });
+    } else {
+      // Handle the case where the new value is not a valid option
+      print('Invalid currency option: $newValue');
+    }
+  }
+
+  void _handleTargetCurrencyChange(String newValue) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await Future.delayed(Duration(seconds: 2));
+
+    setState(() {
+      _targetCurrency = newValue;
+      _updateConvertedAmount();
+      _isLoading = false;
+    });
   }
 
   @override
@@ -82,48 +136,39 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
           child: Column(
             children: <Widget>[
               Row(
-                children: <Widget>[
+                children: [
                   Container(
                     width: size.width * 0.25,
                     height: size.height * 0.08,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.transparent),
-                        color: AppColors.darkGreyColor),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.transparent),
+                      color: AppColors.darkGreyColor,
+                    ),
                     child: Center(
-                      child: DropdownButton<String>(
-                        value: _baseCurrency,
-                        dropdownColor: AppColors.darkGreyColor,
-                        icon: SvgPicture.asset('assets/icons/down.svg'),
-                        isExpanded: true,
-                        underline: Container(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _baseCurrency = newValue!;
-                            _loadConversionRates(_baseCurrency);
-                            _baseCurrencyController.text = '1';
-                            _baseAmount = 1.0;
-                            _updateConvertedAmount();
-                          });
-                        },
-                        items: <String>[
-                          'USD',
-                          'EUR',
-                          'GBP',
-                          'CNY',
-                          'JPY',
-                          'RUB'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            alignment: Alignment.center,
-                            child: Text(
-                              value,
-                              style: CurrencyTextStyle.rowDropDown,
+                      child: _isLoading
+                          ? CupertinoActivityIndicator()
+                          : DropdownButton<String>(
+                              value: _baseCurrency,
+                              dropdownColor: AppColors.darkGreyColor,
+                              icon: SvgPicture.asset('assets/icons/down.svg'),
+                              isExpanded: true,
+                              underline: Container(),
+                              onChanged: (String? newValue) {
+                                _handleBaseCurrencyChange(newValue!);
+                              },
+                              items: ['USD', 'EUR', 'GBP', 'CNY', 'JPY', 'RUB']
+                                  .map((String value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    value,
+                                    style: CurrencyTextStyle.rowDropDown,
+                                  ),
+                                );
+                              }).toList(),
                             ),
-                          );
-                        }).toList(),
-                      ),
                     ),
                   ),
                   SizedBox(width: size.width * 0.03),
@@ -150,10 +195,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                                   EdgeInsets.symmetric(horizontal: 10.0),
                             ),
                             onChanged: (value) {
-                              setState(() {
-                                _baseAmount = double.tryParse(value) ?? 0.0;
-                                _updateConvertedAmount();
-                              });
+                              _handleBaseAmountChange(value);
                             },
                           ),
                         ),
@@ -162,50 +204,46 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              SizedBox(
+                height: size.height * 0.03,
+              ),
               Row(
-                children: <Widget>[
+                children: [
                   Container(
                     width: size.width * 0.25,
                     height: size.height * 0.08,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.transparent),
-                        color: AppColors.darkGreyColor),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Colors.transparent),
+                      color: AppColors.darkGreyColor,
+                    ),
                     child: Center(
-                      child: DropdownButton<String>(
-                        icon: SvgPicture.asset('assets/icons/up.svg'),
-                        value: _targetCurrency,
-                        dropdownColor: AppColors.darkGreyColor,
-                        isExpanded: true,
-                        underline: Container(),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _targetCurrency = newValue!;
-                            _updateConvertedAmount();
-                          });
-                        },
-                        items: <String>[
-                          'USD',
-                          'EUR',
-                          'GBP',
-                          'CNY',
-                          'JPY',
-                          'RUB'
-                        ].map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            alignment: Alignment.center,
-                            value: value,
-                            child: Text(
-                              value,
-                              style: CurrencyTextStyle.rowDropDown,
+                      child: _isLoading
+                          ? CupertinoActivityIndicator()
+                          : DropdownButton<String>(
+                              icon: SvgPicture.asset('assets/icons/up.svg'),
+                              value: _targetCurrency,
+                              dropdownColor: AppColors.darkGreyColor,
+                              isExpanded: true,
+                              underline: Container(),
+                              onChanged: (String? newValue) {
+                                _handleTargetCurrencyChange(newValue!);
+                              },
+                              items: ['USD', 'EUR', 'GBP', 'CNY', 'JPY', 'RUB']
+                                  .map((String value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    value,
+                                    style: CurrencyTextStyle.rowDropDown,
+                                  ),
+                                );
+                              }).toList(),
                             ),
-                          );
-                        }).toList(),
-                      ),
                     ),
                   ),
-                  SizedBox(width: size.width * 0.03),
+                  SizedBox(width: size.width * 0.02),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -301,6 +339,7 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
           CircleAvatar(
             radius: size.width * 0.065,
             backgroundColor: _getCircleColor(currency),
+            child: _getCurrencyIcon(currency),
           ),
           Expanded(
             flex: 2,
@@ -341,6 +380,29 @@ class _CurrencyScreenState extends State<CurrencyScreen> {
         return AppColors.blueColor;
       default:
         return Colors.grey;
+    }
+  }
+
+  Widget _getCurrencyIcon(String currency) {
+    String assetPath = 'assets/icons/';
+    switch (currency) {
+      case 'CNY':
+        return SvgPicture.asset(
+          '${assetPath}cny.svg',
+          color: AppColors.blackColor,
+        );
+      case 'RUB':
+        return SvgPicture.asset(
+          '${assetPath}rub.svg',
+          color: AppColors.blackColor,
+        );
+      case 'USD':
+        return SvgPicture.asset(
+          '${assetPath}usd.svg',
+          color: AppColors.blackColor,
+        );
+      default:
+        return const SizedBox.shrink();
     }
   }
 }

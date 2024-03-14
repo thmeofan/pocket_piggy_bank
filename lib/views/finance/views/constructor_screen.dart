@@ -39,6 +39,7 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
       final comment = _commentController.text;
 
       if (description.isEmpty || amount == null || date.isEmpty) {
+        _showErrorSnackBar('Make sure you filled all the fields');
         debugPrint(
             'Validation failed: description, amount, or date is missing.');
         return;
@@ -54,8 +55,21 @@ class _ConstructorScreenState extends State<ConstructorScreen> {
 
       Navigator.of(context).pop(operation);
     } catch (e) {
+      _showErrorSnackBar('Make sure you filled all the fields');
       debugPrint('Error in _saveOperation: $e');
     }
+  }
+
+  void _showErrorSnackBar(String message) {
+    final snackBar = SnackBar(
+      content: Text(
+        message,
+        style: TextStyle(color: AppColors.purpleColor),
+      ),
+      backgroundColor: AppColors.darkGreyColor,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void _pickDate() async {
